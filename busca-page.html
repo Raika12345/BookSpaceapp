@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookVerse - Busca</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f5f2;
+            color: #3e2723;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6b4f4f 0%, #3e2723 100%);
+            color: white;
+            padding: 20px;
+        }
+
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .search-input {
+            flex: 1;
+            display: flex;
+        }
+
+        .search-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 10px 0 0 10px;
+            font-size: 1rem;
+        }
+
+        .search-input button {
+            background-color: #564037;
+            color: white;
+            border: none;
+            border-radius: 0 10px 10px 0;
+            padding: 0 20px;
+            cursor: pointer;
+        }
+
+        .container {
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .search-results {
+            margin-top: 20px;
+        }
+
+        .results-count {
+            color: #795548;
+            margin-bottom: 15px;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .book-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-cover {
+            height: 180px;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-info {
+            padding: 15px;
+        }
+
+        .book-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .book-author {
+            color: #795548;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .book-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-weight: 700;
+            color: #3e2723;
+        }
+
+        .add-to-cart {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #6b4f4f;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #795548;
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #d7ccc8;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #9e9e9e;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        .nav-item.active {
+            color: #6b4f4f;
+        }
+
+        .nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        @media (min-width: 768px) {
+            .books-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="search-header">
+            <a href="index-page.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="search-input">
+                <input type="text" id="search-input" placeholder="Buscar livros, autores...">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="search-results">
+            <div class="results-count" id="results-count"></div>
+            <div class="books-grid" id="books-grid">
+                <!-- Resultados da busca aparecerão aqui -->
+            </div>
+            <div class="no-results" id="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>Nenhum livro encontrado</h3>
+                <p>Tente usar outras palavras-chave</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index-page.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="busca-page.html" class="nav-item active">
+            <i class="fas fa-search"></i>
+            <span>Buscar</span>
+        </a>
+        <a href="pedidos-page.html" class="nav-item">
+            <i class="fas fa-book-open"></i>
+            <span>pedidos</span>
+        </a>
+        <a href="perfil-page.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Perfil</span>
+        </a>
+    </div>
+
+    <script>
+        // Dados dos livros (mesmo do index)
+        const books = [
+            {
+                id: 1,
+                title: "A Sombra do Vento",
+                author: "Carlos Ruiz Zafón",
+                price: 42.90,
+                category: "ficcao",
+                image: "https://m.media-amazon.com/images/I/81dQwQlmAXL._AC_UF1000,1000_QL80_.jpg"
+            },
+            {
+                id: 2,
+                title: "Cem Anos de Solidão",
+                author: "Gabriel García Márquez",
+                price: 39.90,
+                category: "ficcao", 
+                image: "seman.jpg"
+            },
+            {
+                id: 3,
+                title: "O Hobbit",
+                author: "J.R.R. Tolkien",
+                price: 35.50,
+                category: "fantasia",
+                image: "https://m.media-amazon.com/images/I/71uOM2oU5bL._AC_UF1000,1000_QL80_.jpg"
+            },
+            {
+                id: 4,
+                title: "1984",
+                author: "George Orwell",
+                price: 29.90,
+                category: "ficcao",
+                image: "https://m.media-amazon.com/images/I/71kxa1-0mfL._AC_UF1000,1000_QL80_.jpg"
+            },
+            {
+                id: 5,
+                title: "Orgulho e Preconceito",
+                author: "Jane Austen",
+                price: 32.90,
+                category: "romance",
+                image: "https://m.media-amazon.com/images/I/71Q1tPupKjL._AC_UF1000,1000_QL80_.jpg"
+            }
+        ];
+
+        function performSearch() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+            const booksGrid = document.getElementById('books-grid');
+            const noResults = document.getElementById('no-results');
+            const resultsCount = document.getElementById('results-count');
+
+            if (searchTerm === '') {
+                booksGrid.innerHTML = '';
+                noResults.style.display = 'block';
+                resultsCount.textContent = '';
+                return;
+            }
+
+            const filteredBooks = books.filter(book => 
+                book.title.toLowerCase().includes(searchTerm) || 
+                book.author.toLowerCase().includes(searchTerm)
+            );
+
+            if (filteredBooks.length === 0) {
+                booksGrid.innerHTML = '';
+                noResults.style.display = 'block';
+                resultsCount.textContent = 'Nenhum resultado encontrado';
+            } else {
+                noResults.style.display = 'none';
+                resultsCount.textContent = `${filteredBooks.length} livro(s) encontrado(s)`;
+                
+                booksGrid.innerHTML = filteredBooks.map(book => `
+                    <div class="book-card" onclick="viewBook(${book.id})">
+                        <div class="book-cover">
+                            <img src="${book.image}" alt="${book.title}" onerror="this.src='https://via.placeholder.com/150x200/6b4f4f/ffffff?text=Livro'">
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">${book.title}</div>
+                            <div class="book-author">${book.author}</div>
+                            <div class="book-price">
+                                <div class="price">R$ ${book.price.toFixed(2)}</div>
+                                <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${book.id})">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function addToCart(bookId) {
+            const book = books.find(b => b.id === bookId);
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            const existingItem = cart.find(item => item.id === bookId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: book.id,
+                    title: book.title,
+                    author: book.author,
+                    price: book.price,
+                    image: book.image,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`${book.title} adicionado ao carrinho!`);
+        }
+
+        function viewBook(bookId) {
+            localStorage.setItem('currentBook', bookId);
+            window.location.href = 'livro-detalhes.html';
+        }
+
+        document.getElementById('search-btn').addEventListener('click', performSearch);
+        document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Buscar automaticamente se houver termo na URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchQuery = urlParams.get('q');
+        if (searchQuery) {
+            document.getElementById('search-input').value = searchQuery;
+            performSearch();
+        }
+    </script>
+</body>
+  </html>
