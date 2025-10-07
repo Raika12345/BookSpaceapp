@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookSpace - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6b414f 0%, #3e2723 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0 20px;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .slogan {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-title {
+            color: #3e2723;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #5d4037;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #d7ccc8;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            color: #3e2723;
+            background-color: white;
+        }
+
+        .input-group input:focus {
+            border-color: #6b414f;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(107, 79, 79, 0.2);
+        }
+
+        .btn {
+            background-color: #6b4f4f;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .btn:hover {
+            background-color: #5d4037;
+        }
+
+        .btn:disabled {
+            background-color: #9e9e9e;
+            cursor: not-allowed;
+        }
+
+        .register-prompt {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-prompt p {
+            margin-bottom: 15px;
+            color: #5d4037;
+        }
+
+        .register-link {
+            display: inline-block;
+            background-color: transparent;
+            color: #6b4f4f;
+            border: 2px solid #6b4f4f;
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .register-link:hover {
+            background-color: #6b4f4f;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 25px;
+            }
+
+            .logo {
+                font-size: 2.4rem;
+            }
+
+            .slogan {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">BookSpace</div>
+            <div class="slogan">Entre em seu universo literário</div>
+        </div>
+
+        <div class="form-container">
+            <h2 class="form-title">Login</h2>
+
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" placeholder="seu@email.com">
+            </div>
+
+            <div class="input-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" placeholder="Sua senha">
+            </div>
+
+            <button class="btn" id="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Entrar
+            </button>
+
+            <div class="register-prompt">
+                <p>Não tem uma conta?</p>
+                <a href="cadastro-page.html" class="register-link">
+                    <i class="fas fa-user-plus"></i> Cadastrar
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">  
+            <p>&copy; 2025 BookSpace - Todos os direitos reservados</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth } from './firebase-config.js';
+        import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // LOGIN COM FIREBASE
+        document.getElementById('login-btn').addEventListener('click', function() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = this;
+            
+            if(!email || !password) {
+                alert('⚠️ Por favor, preencha todos os campos.');
+                return;
+            }
+
+            // Mostrar loading
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+            btn.disabled = true;
+
+            // Fazer login
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Sucesso
+                    btn.innerHTML = '<i class="fas fa-check"></i> Sucesso!';
+                    setTimeout(() => {
+                        window.location.href = 'index-page.html';
+                    }, 1000);
+                })
+                .catch((error) => {
+                    // Erro
+                    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
+                    btn.disabled = false;
+                    
+                    switch(error.code) {
+                        case 'auth/user-not-found':
+                            alert('❌ Usuário não encontrado. Crie uma conta primeiro.');
+                            break;
+                        case 'auth/wrong-password':
+                            alert('❌ Senha incorreta.');
+                            break;
+                        case 'auth/invalid-email':
+                            alert('❌ Email inválido.');
+                            break;
+                        default:
+                            alert('❌ Erro: ' + error.message);
+                    }
+                });
+        });
+
+        // Enter para login
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') {
+                document.getElementById('login-btn').click();
+            }
+        });
+    </script>
+
+</body>
+  </html>
