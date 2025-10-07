@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookSpace - Detalhes do Livro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f5f2;
+            color: #3e2723;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6b4f4f 0%, #3e2723 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .cart-btn {
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .book-detail {
+            padding: 20px;
+        }
+
+        .book-cover-large {
+            height: 300px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-cover-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .book-author {
+            font-size: 1.1rem;
+            color: #795548;
+            margin-bottom: 15px;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stars {
+            color: #ffc107;
+        }
+
+        .rating-count {
+            color: #9e9e9e;
+            font-size: 0.9rem;
+        }
+
+        .price-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .current-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .original-price {
+            color: #9e9e9e;
+            text-decoration: line-through;
+            font-size: 1.2rem;
+        }
+
+        .discount {
+            background-color: #ff5252;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .add-cart-btn {
+            flex: 1;
+            background-color: #6b4f4f;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .description-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .description {
+            line-height: 1.6;
+            color: #5d4037;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: #9e9e9e;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-weight: 500;
+        }
+
+        .fixed-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 15px 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-bottom {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bottom-label {
+            font-size: 0.9rem;
+            color: #9e9e9e;
+        }
+
+        .bottom-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .buy-now-btn {
+            background-color: #3e2723;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        @media (min-width: 768px) {
+            .book-detail {
+                display: flex;
+                gap: 30px;
+            }
+
+            .book-cover-container {
+                flex: 1;
+            }
+
+            .book-info-container {
+                flex: 2;
+            }
+
+            .book-cover-large {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index-page.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="logo">BookSpace</div>
+        <a href="carrinho- page.html" class="cart-btn">
+            <i class="fas fa-shopping-cart"></i>
+        </a>
+    </div>
+
+    <div class="book-detail">
+        <div class="book-cover-container">
+            <div class="book-cover-large">
+                <img id="book-image" src="" alt="Capa do Livro">
+            </div>
+        </div>
+
+        <div class="book-info-container">
+            <h1 class="book-title" id="book-title">Carregando...</h1>
+            <div class="book-author" id="book-author">Carregando...</div>
+
+            <div class="rating">
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <div class="rating-count">428 avaliações</div>
+            </div>
+
+            <div class="price-section">
+                <div class="current-price" id="book-price">R$ 0,00</div>
+                <div class="original-price" id="original-price">R$ 0,00</div>
+                <div class="discount" id="discount-badge">0% OFF</div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="add-cart-btn" id="add-to-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    Adicionar ao Carrinho
+                </button>
+            </div>
+
+            <div class="description-section">
+                <h3 class="section-title">Descrição</h3>
+                <p class="description" id="book-description">
+                    Carregando descrição...
+                </p>
+            </div>
+
+            <div class="details-section">
+                <h3 class="section-title">Detalhes</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Editora</span>
+                        <span class="detail-value" id="book-publisher">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Páginas</span>
+                        <span class="detail-value" id="book-pages">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Idioma</span>
+                        <span class="detail-value" id="book-language">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Ano</span>
+                        <span class="detail-value" id="book-year">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">ISBN</span>
+                        <span class="detail-value" id="book-isbn">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Categoria</span>
+                        <span class="detail-value" id="book-category">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed-bottom">
+        <div class="price-bottom">
+            <span class="bottom-label">Preço:</span>
+            <span class="bottom-price" id="bottom-price">R$ 0,00</span>
+        </div>
+        <button class="buy-now-btn" id="buy-now">Comprar Agora</button>
+    </div>
+
+    <script>
+        // Dados dos livros (mantendo compatibilidade com a página principal)
+        const books = {
+            1: {
+                id: 1,
+                title: "A Sombra do Vento",
+                author: "Carlos Ruiz Zafón",
+                price: 42.90,
+                originalPrice: 59.90,
+                image: "https://m.media-amazon.com/images/I/81dQwQlmAXL._AC_UF1000,1000_QL80_.jpg",
+                description: "Barcelona, 1945. Um menino é conduzido por seu pai a um misterioso lugar oculto no coração da cidade antiga: o Cemitério dos Livros Esquecidos. Lá, Daniel Sempere encontra um livro maldito que muda o rumo de sua vida e o arrasta para um labirinto de intrigas e segredos enterrados na alma obscura da cidade.",
+                publisher: "Editora Planeta",
+                pages: "480",
+                language: "Português",
+                year: "2004",
+                isbn: "978-8501058342",
+                category: "Ficção, Mistério"
+            },
+            2: {
+                id: 2,
+                title: "Cem Anos de Solidão",
+                author: "Gabriel García Márquez", 
+                price: 39.90,
+                originalPrice: 49.90,
+                image: "https://m.media-amazon.com/images/I/81V7cJ+8URL._AC_UF1000,1000_QL80_.jpg",
+                description: "A obra-prima de Gabriel García Márquez que narra a incrível e triste história dos Buendía - a estirpe de solitários para a qual não será dada uma segunda oportunidade sobre a terra.",
+                publisher: "Editora Record",
+                pages: "448",
+                language: "Português", 
+                year: "1967",
+                isbn: "978-8501014144",
+                category: "Ficção, Realismo Mágico"
+            },
+            3: {
+                id: 3,
+                title: "O Hobbit",
+                author: "J.R.R. Tolkien",
+                price: 35.50,
+                originalPrice: 45.00,
+                image: "https://m.media-amazon.com/images/I/71uOM2oU5bL._AC_UF1000,1000_QL80_.jpg",
+                description: "Bilbo Bolseiro era um dos mais respeitáveis hobbits de todo o Condado até que, um dia, o mago Gandalf bate à sua porta. A partir de então, toda sua vida pacata e campestre soprando anéis de fumaça com seu belo cachimbo começa a mudar.",
+                publisher: "Editora Martins Fontes",
+                pages: "336",
+                language: "Português",
+                year: "1937", 
+                isbn: "978-8533613379",
+                category: "Fantasia, Aventura"
+            },
+            4: {
+                id: 4,
+                title: "1984",
+                author: "George Orwell",
+                price: 29.90,
+                originalPrice: 39.90,
+                image: "https://m.media-amazon.com/images/I/71kxa1-0mfL._AC_UF1000,1000_QL80_.jpg",
+                description: "Um romance distópico que se passa em um futuro totalitário onde o governo, liderado pelo Grande Irmão, controla todos os aspectos da vida das pessoas.",
+                publisher: "Editora Companhia das Letras",
+                pages: "328",
+                language: "Português",
+                year: "1949",
+                isbn: "978-8535914849",
+                category: "Ficção, Distopia"
+            },
+            5: {
+                id: 5,
+                title: "Orgulho e Preconceito",
+                author: "Jane Austen",
+                price: 32.90,
+                originalPrice: 42.90,
+                image: "https://m.media-amazon.com/images/I/71Q1tPupKjL._AC_UF1000,1000_QL80_.jpg",
+                description: "A clássica história de amor entre Elizabeth Bennet e Mr. Darcy, explorando temas como orgulho, preconceito e as convenções sociais da Inglaterra do século XIX.",
+                publisher: "Editora Martin Claret",
+                pages: "424",
+                language: "Português",
+                year: "1813",
+                isbn: "978-8572326978",
+                category: "Romance, Clássico"
+            },
+            6: {
+                id: 6,
+                title: "A Paciente Silenciosa",
+                author: "Alex Michaelides",
+                price: 47.90,
+                originalPrice: 59.90,
+                image: "https://m.media-amazon.com/images/I/81bsw6fnUiL._AC_UF1000,1000_QL80_.jpg",
+                description: "Um thriller psicológico sobre uma mulher que atira no marido cinco vezes e depois nunca mais fala, e o terapeuta criminal determinado a fazê-la falar.",
+                publisher: "Editora Record",
+                pages: "352",
+                language: "Português",
+                year: "2019",
+                isbn: "978-8501118255",
+                category: "Thriller, Suspense"
+            }
+        };
+
+        function loadBookDetails() {
+            const bookId = parseInt(localStorage.getItem('currentBook'));
+            const book = books[bookId];
+
+            if (!book) {
+                alert('Livro não encontrado!');
+                window.location.href = 'index-page.html';
+                return;
+            }
+
+            // Preencher dados do livro
+            document.getElementById('book-title').textContent = book.title;
+            document.getElementById('book-author').textContent = book.author;
+            document.getElementById('book-price').textContent = `R$ ${book.price.toFixed(2)}`;
+            document.getElementById('original-price').textContent = `R$ ${book.originalPrice.toFixed(2)}`;
+            document.getElementById('bottom-price').textContent = `R$ ${book.price.toFixed(2)}`;
+            document.getElementById('book-image').src = book.image;
+            document.getElementById('book-image').alt = book.title;
+            document.getElementById('book-description').textContent = book.description;
+            
+            // Calcular desconto
+            const discount = Math.round((1 - book.price / book.originalPrice) * 100);
+            document.getElementById('discount-badge').textContent = `${discount}% OFF`;
+
+            // Preencher detalhes
+            document.getElementById('book-publisher').textContent = book.publisher;
+            document.getElementById('book-pages').textContent = book.pages;
+            document.getElementById('book-language').textContent = book.language;
+            document.getElementById('book-year').textContent = book.year;
+            document.getElementById('book-isbn').textContent = book.isbn;
+            document.getElementById('book-category').textContent = book.category;
+        }
+
+        document.getElementById('add-to-cart').addEventListener('click', function() {
+            const bookId = parseInt(localStorage.getItem('currentBook'));
+            const book = books[bookId];
+            
+            // Simular adição ao carrinho
+            alert(`${book.title} adicionado ao carrinho!\n\nPreço: R$ ${book.price.toFixed(2)}`);
+            
+            // Redirecionar para o carrinho
+            setTimeout(() => {
+                window.location.href = 'carrinho- page.html';
+            }, 1500);
+        });
+
+        document.getElementById('buy-now').addEventListener('click', function() {
+            const bookId = parseInt(localStorage.getItem('currentBook'));
+            const book = books[bookId];
+            
+            alert(`Compra rápida: ${book.title}\n\nRedirecionando para pagamento...`);
+            
+            // Redirecionar direto para o pagamento
+            setTimeout(() => {
+                window.location.href = 'pagamentos-page.html';
+            }, 1500);
+        });
+
+        // Carregar detalhes do livro quando a página abrir
+        window.addEventListener('DOMContentLoaded', loadBookDetails);
+    </script>
+</body>
+</html>
