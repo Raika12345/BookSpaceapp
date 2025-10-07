@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookVerse - Alterar Senha</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f5f2;
+            color: #3e2723;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6b4f4f 0%, #3e2723 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            color: #3e2723;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #5d4037;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #d7ccc8;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #6b4f4f;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(107, 79, 79, 0.2);
+        }
+
+        .btn {
+            background-color: #6b4f4f;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #5d4037;
+        }
+
+        .btn:disabled {
+            background-color: #9e9e9e;
+            cursor: not-allowed;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .password-strength {
+            margin-top: 5px;
+            font-size: 0.8rem;
+        }
+
+        .strength-weak {
+            color: #f44336;
+        }
+
+        .strength-medium {
+            color: #ff9800;
+        }
+
+        .strength-strong {
+            color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="perfil-page.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1>Alterar Senha</h1>
+        </div>
+
+        <div class="form-container">
+            <h2 class="form-title">Nova Senha</h2>
+
+            <div class="input-group">
+                <label for="current-password">Senha Atual</label>
+                <input type="password" id="current-password" placeholder="Digite sua senha atual">
+            </div>
+
+            <div class="input-group">
+                <label for="new-password">Nova Senha</label>
+                <input type="password" id="new-password" placeholder="Mínimo 6 caracteres">
+                <div id="password-strength" class="password-strength"></div>
+            </div>
+
+            <div class="input-group">
+                <label for="confirm-password">Confirmar Nova Senha</label>
+                <input type="password" id="confirm-password" placeholder="Confirme a nova senha">
+            </div>
+
+            <button class="btn" id="change-password-btn">
+                <i class="fas fa-lock"></i> Alterar Senha
+            </button>
+
+            <div id="message" class="message"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth } from './firebase-config.js';
+        import { 
+            reauthenticateWithCredential, 
+            EmailAuthProvider,
+            updatePassword 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const changePasswordBtn = document.getElementById('change-password-btn');
+        const newPasswordInput = document.getElementById('new-password');
+        const passwordStrength = document.getElementById('password-strength');
+
+        // Verificar força da senha
+        newPasswordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = '';
+            let strengthClass = '';
+
+            if (password.length === 0) {
+                strength = '';
+            } else if (password.length < 6) {
+                strength = 'Senha muito curta (mínimo 6 caracteres)';
+                strengthClass = 'strength-weak';
+            } else if (password.length < 8) {
+                strength = 'Senha fraca';
+                strengthClass = 'strength-weak';
+            } else if (password.length < 10) {
+                strength = 'Senha média';
+                strengthClass = 'strength-medium';
+            } else {
+                strength = 'Senha forte';
+                strengthClass = 'strength-strong';
+            }
+
+            passwordStrength.textContent = strength;
+            passwordStrength.className = `password-strength ${strengthClass}`;
+        });
+
+        changePasswordBtn.addEventListener('click', async function() {
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const messageElement = document.getElementById('message');
+
+            // Reset message
+            messageElement.style.display = 'none';
+            messageElement.className = 'message';
+
+            // Validações
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showMessage('Por favor, preencha todos os campos.', 'error');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showMessage('As senhas não coincidem.', 'error');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                showMessage('A senha deve ter pelo menos 6 caracteres.', 'error');
+                return;
+            }
+
+            // Verificar se o usuário está logado
+            const user = auth.currentUser;
+            if (!user) {
+                showMessage('Você precisa estar logado para alterar a senha.', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login-:page.html';
+                }, 2000);
+                return;
+            }
+
+            // Mostrar loading
+            changePasswordBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Alterando...';
+            changePasswordBtn.disabled = true;
+
+            try {
+                // Reautenticar o usuário
+                const credential = EmailAuthProvider.credential(user.email, currentPassword);
+                await reauthenticateWithCredential(user, credential);
+
+                // Atualizar a senha
+                await updatePassword(user, newPassword);
+
+                // Sucesso
+                showMessage('Senha alterada com sucesso!', 'success');
+                
+                // Limpar campos
+                document.getElementById('current-password').value = '';
+                document.getElementById('new-password').value = '';
+                document.getElementById('confirm-password').value = '';
+                passwordStrength.textContent = '';
+
+                // Redirecionar após 2 segundos
+                setTimeout(() => {
+                    window.location.href = 'perfil-page.html';
+                }, 2000);
+
+            } catch (error) {
+                // Tratar erros
+                changePasswordBtn.innerHTML = '<i class="fas fa-lock"></i> Alterar Senha';
+                changePasswordBtn.disabled = false;
+
+                switch(error.code) {
+                    case 'auth/wrong-password':
+                        showMessage('Senha atual incorreta.', 'error');
+                        break;
+                    case 'auth/requires-recent-login':
+                        showMessage('Por segurança, faça login novamente antes de alterar a senha.', 'error');
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 3000);
+                        break;
+                    case 'auth/weak-password':
+                        showMessage('A nova senha é muito fraca. Use uma senha mais forte.', 'error');
+                        break;
+                    default:
+                        showMessage('Erro ao alterar senha: ' + error.message, 'error');
+                }
+            }
+        });
+
+        function showMessage(text, type) {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = text;
+            messageElement.className = `message ${type}`;
+            messageElement.style.display = 'block';
+        }
+
+        // Enter para enviar formulário
+        document.getElementById('confirm-password').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') {
+                document.getElementById('change-password-btn').click();
+            }
+        });
+    </script>
+</body>
+</html>
