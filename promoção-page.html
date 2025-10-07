@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookVerse - Promoção de Verão</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f5f2;
+            color: #3e2723;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6b4f4f 0%, #3e2723 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .promo-banner {
+            background: linear-gradient(to right, #6b4f4f, #6b4f4f);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .promo-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .promo-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #6b4f4f;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .book-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-cover {
+            height: 180px;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #795548;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .book-info {
+            padding: 15px;
+        }
+
+        .book-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .book-author {
+            color: #795548;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .book-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .current-price {
+            font-weight: 700;
+            color: #3e2723;
+            font-size: 1.1rem;
+        }
+
+        .original-price {
+            color: #9e9e9e;
+            text-decoration: line-through;
+            font-size: 0.9rem;
+        }
+
+        .add-to-cart {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #6b4f4f;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #9e9e9e;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        .nav-item.active {
+            color: #6b4f4f;
+        }
+
+        .nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        @media (min-width: 768px) {
+            .books-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <h1>Promoção de Verão</h1>
+    </div>
+
+    <div class="promo-banner">
+        <div class="promo-title">ATÉ 30% OFF</div>
+        <div class="promo-subtitle">Em mais de 100 títulos selecionados</div>
+        <p> <a href="promoção.html">conferir</a></p>
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">Livros em Promoção</h2>
+
+        <div class="books-grid" id="promo-books">
+            <!-- Livros em promoção serão carregados aqui -->
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index-page.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="busca-page.html" class="nav-item">
+            <i class="fas fa-search"></i>
+            <span>Buscar</span>
+        </a>
+        <a href="pedidos-page.html" class="nav-item">
+            <i class="fas fa-book-open"></i>
+            <span>pedidos</span>
+        </a>
+        <a href="perfil-page.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Perfil</span>
+        </a>
+    </div>
+
+    <script>
+        // Livros em promoção (30% off)
+        const promoBooks = [
+            {
+                id: 1,
+                title: "A Sombra do Vento",
+                author: "Carlos Ruiz Zafón",
+                price: 42.90,
+                originalPrice: 59.90,
+                image: "https://m.media-amazon.com/images/I/81dQwQlmAXL._AC_UF1000,1000_QL80_.jpg",
+                discount: 30
+            },
+            {
+                id: 2,
+                title: "Cem Anos de Solidão",
+                author: "Gabriel García Márquez", 
+                price: 39.90,
+                originalPrice: 49.90,
+                image: "seman.jpg",
+                discount: 20
+            },
+            {
+                id: 3,
+                title: "O Hobbit",
+                author: "J.R.R. Tolkien",
+                price: 35.50,
+                originalPrice: 45.00,
+                image: "https://m.media-amazon.com/images/I/91b0C2YNSrL._AC_UF1000,1000_QL80_.jpg",
+                discount: 21
+            },
+            {
+                id: 4,
+                title: "1984",
+                author: "George Orwell",
+                price: 29.90,
+                originalPrice: 39.90,
+                image: "https://m.media-amazon.com/images/I/71kxa1-0mfL._AC_UF1000,1000_QL80_.jpg",
+                discount: 25
+            },
+            {
+                id: 5,
+                title: "Orgulho e Preconceito",
+                author: "Jane Austen",
+                price: 32.90,
+                originalPrice: 42.90,
+                image: "https://m.media-amazon.com/images/I/71Q1tPupKjL._AC_UF1000,1000_QL80_.jpg",
+                discount: 23
+            },
+            {
+                id: 6,
+                title: "A Paciente Silenciosa",
+                author: "Alex Michaelides",
+                price: 47.90,
+                originalPrice: 59.90,
+                image: "pacien.jpg",
+                discount: 20
+            }
+        ];
+
+        function loadPromoBooks() {
+            const promoBooksGrid = document.getElementById('promo-books');
+            
+            promoBooksGrid.innerHTML = promoBooks.map(book => `
+                <div class="book-card" onclick="viewBook(${book.id})">
+                    <div class="book-cover">
+                        <img src="${book.image}" alt="${book.title}" onerror="this.src='https://via.placeholder.com/150x200/6b4f4f/ffffff?text=Livro'">
+                        <div class="discount-badge">-${book.discount}%</div>
+                    </div>
+                    <div class="book-info">
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-author">${book.author}</div>
+                        <div class="book-price">
+                            <div class="price-container">
+                                <div class="current-price">R$ ${book.price.toFixed(2)}</div>
+                                <div class="original-price">R$ ${book.originalPrice.toFixed(2)}</div>
+                            </div>
+                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${book.id})">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+                // Funções auxiliares
+        function viewBook(bookId) {
+            // Armazenar o ID do livro selecionado no localStorage
+            localStorage.setItem('currentBook', bookId);
+            // Redirecionar para a página de detalhes
+            window.location.href = 'livros-detalhes.html';
+        }
+        // Carregar livros em promoção
+        
+       // Função para adicionar ao carrinho
+function addToCart(bookId) {
+    const book = promoBooks.find(b => b.id === bookId);
+    if (!book) return;
+
+    // Obter carrinho atual
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Verificar se o livro já está no carrinho
+    const existingItem = cart.find(item => item.id === bookId);
+    
+    if (existingItem) {
+        // Se já existe, aumenta a quantidade
+        existingItem.quantity += 1;
+    } else {
+        // Se não existe, adiciona novo item
+        cart.push({
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            price: book.price,
+            image: book.image,
+            quantity: 1
+        });
+    }
+    
+    // Salvar carrinho atualizado
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Mostrar mensagem de sucesso
+    showSuccessMessage(`${book.title} adicionado ao carrinho!`);
+}
+
+// Função para mostrar mensagem de sucesso
+function showSuccessMessage(message) {
+    // Criar elemento da mensagem
+    const messageDiv = document.createElement('div');
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #4caf50;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        z-index: 1000;
+        font-weight: 600;
+    `;
+    messageDiv.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 10px;"></i>${message}`;
+    
+    document.body.appendChild(messageDiv);
+    
+    // Remover após 3 segundos
+    setTimeout(() => {
+        messageDiv.remove();
+    }, 3000);
+}
+
+function viewBook(bookId) {
+    // Armazenar o ID do livro selecionado no localStorage
+    localStorage.setItem('currentBook', bookId);
+    // Redirecionar para a página de detalhes
+    window.location.href = 'livros-detalhes.html';
+}
+
+// Carregar livros em promoção
+loadPromoBooks();
+    </script>
+    
+</body>
+</html>
