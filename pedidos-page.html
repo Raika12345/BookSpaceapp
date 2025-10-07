@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookVerse - Meus Pedidos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f5f2;
+            color: #3e2723;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6b4f4f 0%, #3e2723 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .container {
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .order-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .order-number {
+            font-weight: 600;
+            color: #3e2723;
+        }
+
+        .order-date {
+            color: #795548;
+            font-size: 0.9rem;
+        }
+
+        .order-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-delivered {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+        }
+
+        .status-shipping {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .status-processing {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .order-items {
+            margin-bottom: 15px;
+        }
+
+        .order-item {
+            display: flex;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .item-image {
+            width: 60px;
+            height: 80px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .item-author {
+            color: #795548;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: #3e2723;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .track-btn {
+            background-color: #6b4f4f;
+            color: white;
+        }
+
+        .details-btn {
+            background-color: #f5f5f5;
+            color: #3e2723;
+        }
+
+        .empty-orders {
+            text-align: center;
+            padding: 60px 20px;
+            color: #795548;
+        }
+
+        .empty-orders i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #d7ccc8;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #9e9e9e;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        .nav-item.active {
+            color: #6b4f4f;
+        }
+
+        .nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index-page.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <h1>Meus Pedidos</h1>
+    </div>
+
+    <div class="container">
+        <h2 class="page-title">Histórico de Compras</h2>
+
+        <div id="ordersContainer">
+            <!-- Os pedidos aparecerão aqui -->
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index-page.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="busca-page.html" class="nav-item">
+            <i class="fas fa-search"></i>
+            <span>Buscar</span>
+        </a>
+        <a href="pedidos.html" class="nav-item active">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Pedidos</span>
+        </a>
+        <a href="perfil-page.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Perfil</span>
+        </a>
+    </div>
+
+    <script>
+        // Simular pedidos realizados
+        const userOrders = [
+            {
+                id: "PED-001",
+                date: "15/12/2023",
+                status: "delivered",
+                statusText: "Entregue",
+                total: 78.80,
+                items: [
+                    {
+                        id: 1,
+                        title: "A Sombra do Vento",
+                        author: "Carlos Ruiz Zafón",
+                        price: 42.90,
+                        image: "https://m.media-amazon.com/images/I/81dQwQlmAXL._AC_UF1000,1000_QL80_.jpg",
+                        quantity: 1
+                    },
+                    {
+                        id: 3,
+                        title: "Orgulho e Preconceito",
+                        author: "Jane Austen",
+                        price: 35.90,
+                        image: "https://m.media-amazon.com/images/I/71Q1tPupKjL._AC_UF1000,1000_QL80_.jpg",
+                        quantity: 1
+                    }
+                ]
+            },
+            {
+                id: "PED-002", 
+                date: "10/12/2023",
+                status: "shipping",
+                statusText: "Em Transporte",
+                total: 45.90,
+                items: [
+                    {
+                        id: 4,
+                        title: "O Hobbit",
+                        author: "J.R.R. Tolkien",
+                        price: 45.90,
+                        image: "https://m.media-amazon.com/images/I/91b0C2YNSrL._AC_UF1000,1000_QL80_.jpg",
+                        quantity: 1
+                    }
+                ]
+            },
+            {
+                id: "PED-003",
+                date: "05/12/2023",
+                status: "processing",
+                statusText: "Processando",
+                total: 39.90,
+                items: [
+                    {
+                        id: 2,
+                        title: "Cem Anos de Solidão",
+                        author: "Gabriel García Márquez",
+                        price: 39.90,
+                        image: "seman.jpg",
+                        quantity: 1
+                    }
+                ]
+            }
+        ];
+
+        function loadOrders() {
+            const container = document.getElementById('ordersContainer');
+
+            if (userOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-orders">
+                        <i class="fas fa-shopping-bag"></i>
+                        <h3>Nenhum pedido encontrado</h3>
+                        <p>Faça sua primeira compra para ver seus pedidos aqui</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            userOrders.forEach(order => {
+                html += `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-number">${order.id}</div>
+                                <div class="order-date">${order.date}</div>
+                            </div>
+                            <div class="order-status status-${order.status}">${order.statusText}</div>
+                        </div>
+                        
+                        <div class="order-items">
+                            ${order.items.map(item => `
+                                <div class="order-item">
+                                    <div class="item-image">
+                                        <img src="${item.image}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/60x80/6b4f4f/ffffff?text=Livro'">
+                                    </div>
+                                    <div class="item-details">
+                                        <div class="item-title">${item.title}</div>
+                                        <div class="item-author">${item.author}</div>
+                                        <div class="item-price">R$ ${item.price.toFixed(2)}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="order-total">
+                            <span>Total do Pedido:</span>
+                            <span>R$ ${order.total.toFixed(2)}</span>
+                        </div>
+                        
+                        <div class="order-actions">
+                            <button class="action-btn track-btn" onclick="trackOrder('${order.id}')">
+                                <i class="fas fa-truck"></i> Rastrear
+                            </button>
+                            <button class="action-btn details-btn" onclick="viewOrderDetails('${order.id}')">
+                                <i class="fas fa-eye"></i> Detalhes
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function trackOrder(orderId) {
+            alert(`Rastreando pedido: ${orderId}\n\nEm breve você poderá acompanhar a entrega em tempo real!`);
+        }
+
+        function viewOrderDetails(orderId) {
+            const order = userOrders.find(o => o.id === orderId);
+            if (order) {
+                alert(`Detalhes do Pedido: ${orderId}\n\nData: ${order.date}\nStatus: ${order.statusText}\nTotal: R$ ${order.total.toFixed(2)}`);
+            }
+        }
+
+        loadOrders();
+    </script>
+</body>
+</html>
