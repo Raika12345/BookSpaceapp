@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookSpace - Cadastro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6b414f 0%, #3e2723 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0 20px;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .slogan {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-title {
+            color: #3e2723;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #5d4037;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #d7ccc8;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            color: #3e2723;
+            background-color: white;
+        }
+
+        .input-group input:focus {
+            border-color: #6b414f;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(107, 79, 79, 0.2);
+        }
+
+        .address-section {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: #f9f5f2;
+            border-radius: 10px;
+            border-left: 4px solid #6b4f4f;
+        }
+
+        .address-title {
+            color: #3e2723;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .address-title i {
+            color: #6b4f4f;
+        }
+
+        .btn {
+            background-color: #6b4f4f;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .btn:hover {
+            background-color: #5d4037;
+        }
+
+        .btn:disabled {
+            background-color: #9e9e9e;
+            cursor: not-allowed;
+        }
+
+        .login-prompt {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-prompt p {
+            margin-bottom: 15px;
+            color: #5d4037;
+        }
+
+        .login-link {
+            display: inline-block;
+            background-color: transparent;
+            color: #6b4f4f;
+            border: 2px solid #6b4f4f;
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .login-link:hover {
+            background-color: #6b4f4f;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">BookSpace</div>
+            <div class="slogan">Junte-se ao nosso universo literário</div>
+        </div>
+
+        <div class="form-container">
+            <h2 class="form-title">Criar Conta</h2>
+
+            <div class="input-group">
+                <label for="name">Nome Completo</label>
+                <input type="text" id="name" placeholder="Seu nome completo">
+            </div>
+
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" placeholder="seu@email.com">
+            </div>
+
+            <div class="input-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" placeholder="Mínimo 6 caracteres">
+            </div>
+
+            <div class="address-section">
+                <div class="address-title">
+                    <i class="fas fa-home"></i>
+                    <span>Endereço de Entrega</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="cep">CEP</label>
+                    <input type="text" id="cep" placeholder="00000-000" maxlength="9">
+                </div>
+
+                <div class="input-group">
+                    <label for="street">Rua</label>
+                    <input type="text" id="street" placeholder="Nome da rua">
+                </div>
+
+                <div class="input-group">
+                    <label for="number">Número</label>
+                    <input type="text" id="number" placeholder="Número">
+                </div>
+
+                <div class="input-group">
+                    <label for="complement">Complemento</label>
+                    <input type="text" id="complement" placeholder="Apto, bloco, etc.">
+                </div>
+
+                <div class="input-group">
+                    <label for="neighborhood">Bairro</label>
+                    <input type="text" id="neighborhood" placeholder="Bairro">
+                </div>
+
+                <div class="input-group">
+                    <label for="city">Cidade</label>
+                    <input type="text" id="city" placeholder="Cidade">
+                </div>
+
+                <div class="input-group">
+                    <label for="state">Estado</label>
+                    <input type="text" id="state" placeholder="UF" maxlength="2">
+                </div>
+            </div>
+
+            <button class="btn" id="register-btn">
+                <i class="fas fa-user-plus"></i> Criar Conta
+            </button>
+
+            <div class="login-prompt">
+                <p>Já tem uma conta?</p>
+                <a href="login-:page.html" class="login-link">
+                    <i class="fas fa-sign-in-alt"></i> Fazer Login
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">  
+            <p>&copy; 2025 BookSpace - Todos os direitos reservados</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, db } from './firebase-config.js';
+        import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // CADASTRO COM FIREBASE
+        document.getElementById('register-btn').addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const cep = document.getElementById('cep').value;
+            const street = document.getElementById('street').value;
+            const number = document.getElementById('number').value;
+            const complement = document.getElementById('complement').value;
+            const neighborhood = document.getElementById('neighborhood').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            
+            const btn = this;
+
+            // Validação básica
+            if(!name || !email || !password || !cep || !street || !number || !neighborhood || !city || !state) {
+                alert('⚠️ Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+
+            if(password.length < 6) {
+                alert('⚠️ A senha deve ter pelo menos 6 caracteres.');
+                return;
+            }
+
+            // Mostrar loading
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
+            btn.disabled = true;
+
+            // Criar usuário no Firebase Auth
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    
+                    // Salvar dados adicionais no Firestore
+                    return setDoc(doc(db, 'users', user.uid), {
+                        name: name,
+                        email: email,
+                        address: {
+                            cep: cep,
+                            street: street,
+                            number: number,
+                            complement: complement,
+                            neighborhood: neighborhood,
+                            city: city,
+                            state: state.toUpperCase()
+                        },
+                        createdAt: new Date()
+                    });
+                })
+                .then(() => {
+                    // Sucesso
+                    btn.innerHTML = '<i class="fas fa-check"></i> Conta criada!';
+                    setTimeout(() => {
+                        window.location.href = 'index-page.html';
+                    }, 1500);
+                })
+                .catch((error) => {
+                    // Erro
+                    btn.innerHTML = '<i class="fas fa-user-plus"></i> Criar Conta';
+                    btn.disabled = false;
+                    
+                    switch(error.code) {
+                        case 'auth/email-already-in-use':
+                            alert('❌ Este email já está em uso. Tente fazer login.');
+                            break;
+                        case 'auth/invalid-email':
+                            alert('❌ Email inválido.');
+                            break;
+                        case 'auth/weak-password':
+                            alert('❌ Senha muito fraca. Use pelo menos 6 caracteres.');
+                            break;
+                        default:
+                            alert('❌ Erro: ' + error.message);
+                    }
+                });
+        });
+
+        // Formatar CEP
+        document.getElementById('cep').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 5) {
+                value = value.substring(0,5) + '-' + value.substring(5,8);
+            }
+            e.target.value = value;
+        });
+
+        // Enter para cadastrar
+        document.getElementById('state').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') {
+                document.getElementById('register-btn').click();
+            }
+        });
+    </script>
+</body>
+</html>
