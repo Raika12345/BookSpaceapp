@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookSpace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f5f2;
+            color: #3e2723;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6b4f4f 0%, #3e2723 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-icons a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.3rem;
+        }
+
+        .user-name {
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px 0 0 10px;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            background-color: #564037;
+            color: white;
+            border: none;
+            border-radius: 0 10px 10px 0;
+            padding: 0 20px;
+            cursor: pointer;
+        }
+
+        .categories {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 5px 0 15px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: white;
+            border: none;
+        }
+
+        .category.active {
+            background-color: white;
+            color: #3e2723;
+            font-weight: 500;
+        }
+
+        .container {
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .section-title {
+            margin: 25px 0 15px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .book-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-cover {
+            height: 180px;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-info {
+            padding: 15px;
+        }
+
+        .book-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .book-author {
+            color: #795548;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .book-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-weight: 700;
+            color: #3e2723;
+        }
+
+        .add-to-cart {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #6b4f4f;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .banner {
+            background: linear-gradient(to right, #8d6e63, #6b4f4f);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            margin: 30px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .banner-content {
+            flex: 1;
+        }
+
+        .banner-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .banner-btn {
+            background-color: white;
+            color: #3e2723;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .banner-image {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #9e9e9e;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        .nav-item.active {
+            color: #6b4f4f;
+        }
+
+        .nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        @media (min-width: 768px) {
+            .books-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="top-nav">
+            <div class="logo">BookSpace</div>
+            <div class="nav-icons" id="nav-icons">
+                <a href="carrinho- page.html"><i class="fas fa-shopping-cart"></i></a>
+                <span class="user-name" id="user-name"></span>
+            </div>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Buscar livros, autores ou categorias...">
+            <button onclick="searchBooks()"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="categories">
+            <button class="category active" data-category="all">Todos</button>
+            <button class="category" data-category="ficcao">Ficção</button>
+            <button class="category" data-category="romance">Romance</button>
+            <button class="category" data-category="fantasia">Fantasia</button>
+            <button class="category" data-category="biografias">Biografias</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section-title">
+            <h2>Livros em Destaque</h2>
+        </div>
+
+        <div class="books-grid" id="books-grid">
+            <!-- Os livros serão carregados pelo JavaScript -->
+        </div>
+
+        <div class="banner">
+            <div class="banner-content">
+                <div class="banner-title">Promoção de Verão</div>
+                <p>Até 30% de desconto em mais de 100 títulos selecionados</p>
+                <button class="banner-btn" onclick="window.location.href='promoção-page.html'">
+                    Conferir
+                </button>
+            </div>
+            <div class="banner-image">
+                <i class="fas fa-tag"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index-page.html" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="busca-page.html" class="nav-item">
+            <i class="fas fa-search"></i>
+            <span>Buscar</span>
+        </a>
+        <a href="pedidos-page.html" class="nav-item">
+            <i class="fas fa-book-open"></i>
+            <span>pedidos</span>
+        </a>
+        <a href="perfil-page.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Perfil</span>
+        </a>
+    </div>
+
+    <script type="module">
+        import { auth, db } from './firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Dados dos livros
+        const books = [
+            {
+                id: 1,
+                title: "A Sombra do Vento",
+                author: "Carlos Ruiz Zafón",
+                price: 42.90,
+                category: "ficcao",
+                image: "https://m.media-amazon.com/images/I/81dQwQlmAXL._AC_UF1000,1000_QL80_.jpg"
+            },
+            {
+                id: 2,
+                title: "Cem Anos de Solidão",
+                author: "Gabriel García Márquez",
+                price: 39.90,
+                category: "ficcao",
+                image: "seman.jpg"
+            },
+            {
+                id: 3,
+                title: "Orgulho e Preconceito",
+                author: "Jane Austen",
+                price: 35.90,
+                category: "romance",
+                image: "https://m.media-amazon.com/images/I/71Q1tPupKjL._AC_UF1000,1000_QL80_.jpg"
+            },
+            {
+                id: 4,
+                title: "O Hobbit",
+                author: "J.R.R. Tolkien",
+                price: 45.90,
+                category: "fantasia",
+                image: "https://m.media-amazon.com/images/I/91b0C2YNSrL._AC_UF1000,1000_QL80_.jpg"
+            }
+        ];
+
+        // Verificar autenticação e carregar dados do usuário
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Carregar dados do usuário
+                getDoc(doc(db, 'users', user.uid))
+                    .then((docSnap) => {
+                        if (docSnap.exists()) {
+                            const userData = docSnap.data();
+                            document.getElementById('user-name').textContent = `Olá, ${userData.name || user.email}`;
+                        }
+                    })
+                    .catch((error) => {
+                        console.log("Erro ao carregar dados do usuário:", error);
+                        document.getElementById('user-name').textContent = `Olá, ${user.email}`;
+                    });
+                
+                // Carregar livros
+                loadBooks();
+                setupCategoryFilters();
+            }
+        });
+
+        // Função para carregar livros
+        function loadBooks(filterCategory = 'all') {
+            const booksGrid = document.getElementById('books-grid');
+            booksGrid.innerHTML = '';
+
+            const filteredBooks = filterCategory === 'all' 
+                ? books 
+                : books.filter(book => book.category === filterCategory);
+
+            filteredBooks.forEach(book => {
+                const bookCard = `
+                    <div class="book-card" onclick="viewBook(${book.id})">
+                        <div class="book-cover">
+                            <img src="${book.image}" alt="${book.title}" onerror="this.src='https://via.placeholder.com/150x200?text=Capa+Não+Disponível'">
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">${book.title}</div>
+                            <div class="book-author">${book.author}</div>
+                            <div class="book-price">
+                                <div class="price">R$ ${book.price.toFixed(2)}</div>
+                                <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${book.id})">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                booksGrid.innerHTML += bookCard;
+            });
+        }
+
+        // Função para filtrar por categoria
+        function setupCategoryFilters() {
+            const categories = document.querySelectorAll('.category');
+            categories.forEach(category => {
+                category.addEventListener('click', function() {
+                    categories.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    const categoryType = this.getAttribute('data-category');
+                    loadBooks(categoryType);
+                });
+            });
+        }
+
+        // Função de busca
+        function searchBooks() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            if (searchTerm.trim() === '') {
+                loadBooks();
+                return;
+            }
+
+            const filteredBooks = books.filter(book => 
+                book.title.toLowerCase().includes(searchTerm) ||
+                book.author.toLowerCase().includes(searchTerm)
+            );
+
+            const booksGrid = document.getElementById('books-grid');
+            booksGrid.innerHTML = '';
+
+            if (filteredBooks.length === 0) {
+                booksGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 20px;">Nenhum livro encontrado</p>';
+                return;
+            }
+
+            filteredBooks.forEach(book => {
+                const bookCard = `
+                    <div class="book-card" onclick="viewBook(${book.id})">
+                        <div class="book-cover">
+                            <img src="${book.image}" alt="${book.title}" onerror="this.src='https://via.placeholder.com/150x200?text=Capa+Não+Disponível'">
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">${book.title}</div>
+                            <div class="book-author">${book.author}</div>
+                            <div class="book-price">
+                                <div class="price">R$ ${book.price.toFixed(2)}</div>
+                                <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${book.id})">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                booksGrid.innerHTML += bookCard;
+            });
+        }
+
+        // Funções auxiliares
+        function viewBook(bookId) {
+            // Armazenar o ID do livro selecionado no localStorage
+            localStorage.setItem('currentBook', bookId);
+            // Redirecionar para a página de detalhes
+            window.location.href = 'livros-detalhes.html';
+        }
+
+        function addToCart(bookId) {
+    const book = books.find(b => b.id === bookId);
+    if (!book) return;
+
+    // Obter carrinho atual
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Verificar se o livro já está no carrinho
+    const existingItem = cart.find(item => item.id === bookId);
+    
+    if (existingItem) {
+        // Se já existe, aumenta a quantidade
+        existingItem.quantity += 1;
+    } else {
+        // Se não existe, adiciona novo item
+        cart.push({
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            price: book.price,
+            image: book.image,
+            quantity: 1
+        });
+    }
+    
+    // Salvar carrinho atualizado
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Mostrar mensagem de sucesso
+    showSuccessMessage(`${book.title} adicionado ao carrinho!`);
+}
+
+// Adicione esta função para mostrar mensagem
+function showSuccessMessage(message) {
+    // Criar elemento da mensagem
+    const messageDiv = document.createElement('div');
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #4caf50;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        z-index: 1000;
+        font-weight: 600;
+    `;
+    messageDiv.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 10px;"></i>${message}`;
+    
+    document.body.appendChild(messageDiv);
+    
+    // Remover após 3 segundos
+    setTimeout(() => {
+        messageDiv.remove();
+    }, 3000);
+}
+
+        // Permitir que as funções sejam chamadas globalmente
+        window.searchBooks = searchBooks;
+        window.viewBook = viewBook;
+        window.addToCart = addToCart;
+    </script>
+
+    <script type="module" src="auth-check.js"></script>
+</body>
+  </html>
