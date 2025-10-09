@@ -13,7 +13,7 @@ onAuthStateChanged(auth, (user) => {
     } else {
         // Se está logado e está nas páginas de login/cadastro, redireciona para index
         if (currentPage.includes('login-page.html') || currentPage.includes('cadastro-page.html')) {
-            window.location.href = 'index-page.html';
+            window.location.href = 'index.html';
         }
     }
 });
