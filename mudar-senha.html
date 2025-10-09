@@ -250,7 +250,7 @@
             if (!user) {
                 showMessage('Você precisa estar logado para alterar a senha.', 'error');
                 setTimeout(() => {
-                    window.location.href = 'login-:page.html';
+                    window.location.href = 'login-page.html';
                 }, 2000);
                 return;
             }
@@ -293,7 +293,7 @@
                     case 'auth/requires-recent-login':
                         showMessage('Por segurança, faça login novamente antes de alterar a senha.', 'error');
                         setTimeout(() => {
-                            window.location.href = 'login.html';
+                            window.location.href = 'login-page.html';
                         }, 3000);
                         break;
                     case 'auth/weak-password':
