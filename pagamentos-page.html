@@ -428,7 +428,7 @@
                 <p>Escaneie o QR Code acima para realizar o pagamento</p>
                 <p style="font-size: 0.9rem; color: #9e9e9e; margin-top: 10px;">Ou copie o código PIX abaixo:</p>
                 <div class="pix-code" id="pix-code">
-                    00020126580014br.gov.bcb.pix0136aae219e8-8a9a-4c8e-8b1c-1d8f9a7b2c3d5204000053039865802BR5913BOOKVERSE LTDA6008SAO PAULO62070503***6304A1B2
+                    00020126580014br.pix0136aae219e8-8a9a-4c8e-8b1c-1d8f9a7b2c3d5204000053039865802BR5913BOOKVERSE LTDA6008SAO PAULO62070503***6304A1B2
                 </div>
                 <button type="button" class="confirm-btn" style="margin-top: 20px;" onclick="copyPixCode()">
                     <i class="fas fa-copy"></i> Copiar Código PIX
@@ -440,7 +440,7 @@
     </div>
 
     <div class="bottom-nav">
-        <a href="index-page.html" class="nav-item">
+        <a href="index.html" class="nav-item">
             <i class="fas fa-home"></i>
             <span>Inicio</span>
         </a>
@@ -485,7 +485,7 @@
                                 // Se não tem endereço cadastrado
                                 document.getElementById('delivery-street').textContent = 'Endereço não cadastrado';
                                 document.getElementById('delivery-neighborhood').textContent = 'Por favor, atualize seu perfil';
-                                document.getElementById('delivery-city').textContent = 'Clique em "Alterar" para cadastrar';
+                                document.getElementById('delivery-city').textContent = 'Clique em "Alterar" para cadastrar';a href="cadastro-page.html" class="nav-item">
                             }
                         })
                         .catch((error) => {
@@ -647,7 +647,7 @@
 
             // Redirecionar para página inicial
             setTimeout(() => {
-                window.location.href = 'index-page.html';
+                window.location.href = 'index.html';
             }, 2000);
         });
 
